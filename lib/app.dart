@@ -1,3 +1,4 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:task_manager/ui/screens/splash_screen.dart';
 import 'package:task_manager/ui/utility/app_colors.dart';
@@ -9,6 +10,9 @@ class TaskManager extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Task Manager',
+      debugShowCheckedModeBanner: false,
+      locale: DevicePreview.locale(context),
+      builder: DevicePreview.appBuilder,
       home: const SplashScreen(),
       theme: lightThemeData(),
       darkTheme: darkThemeData(),
@@ -56,6 +60,7 @@ class TaskManager extends StatelessWidget {
           foregroundColor: Colors.grey,
           textStyle: const TextStyle(
             fontWeight: FontWeight.w500,
+            color: Colors.grey,
           )
         ),
       ),

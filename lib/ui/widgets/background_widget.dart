@@ -8,14 +8,15 @@ class BackgroundWidget extends StatelessWidget {
 
   final Widget child;
 
+
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         SvgPicture.asset(
           AssetPaths.backgroundSvg,
-          width: double.maxFinite,
-          height: double.maxFinite,
+          width: double.infinity,
+          height: double.infinity,
           fit: BoxFit.cover,
         ),
         child
