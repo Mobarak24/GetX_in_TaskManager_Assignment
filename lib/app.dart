@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:task_manager/ui/screens/sign_in_screen.dart';
+import 'package:task_manager/ui/screens/splash_screen.dart';
 import 'package:task_manager/ui/utility/app_colors.dart';
 
 class TaskManager extends StatelessWidget {
@@ -9,7 +9,7 @@ class TaskManager extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Task Manager',
-      home: const SignInScreen(),
+      home: const SplashScreen(),
       theme: lightThemeData(),
       darkTheme: darkThemeData(),
       themeMode: ThemeMode.system,
@@ -30,9 +30,15 @@ class TaskManager extends StatelessWidget {
       ),
       textTheme: const TextTheme(
         titleLarge: TextStyle(
-          fontSize: 28,
+          fontSize: 24,
           fontWeight: FontWeight.bold,
-        )
+        ),
+        titleSmall: TextStyle(
+          fontWeight: FontWeight.w400,
+          fontSize: 14,
+          color: Colors.grey,
+          letterSpacing: 0.4,
+        ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
@@ -43,6 +49,14 @@ class TaskManager extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: Colors.grey,
+          textStyle: const TextStyle(
+            fontWeight: FontWeight.w500,
+          )
         ),
       ),
     );

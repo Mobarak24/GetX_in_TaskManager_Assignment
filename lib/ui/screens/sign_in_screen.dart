@@ -1,5 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:task_manager/ui/screens/email_verification_screen.dart';
+import 'package:task_manager/ui/screens/sign_up_screen.dart';
 import 'package:task_manager/ui/utility/app_colors.dart';
 import 'package:task_manager/ui/widgets/background_widget.dart';
 
@@ -21,11 +23,11 @@ class _SignInScreenState extends State<SignInScreen> {
         child: SafeArea(
           child: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(40),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 80),
+                  const SizedBox(height: 100),
                   Text(
                     'Get Started With',
                     style: Theme.of(context).textTheme.titleLarge,
@@ -48,42 +50,57 @@ class _SignInScreenState extends State<SignInScreen> {
                     ),
                   ),
                   const SizedBox(height: 36),
-                  Center(
-                    child: Column(
-                      children: [
-                        TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            'Forget Password?',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: 0.4,
-                                color: AppColors.black.withOpacity(0.6)),
-                          ),
-                        ),
-                        RichText(
-                          text: TextSpan(
-                            style:
-                                TextStyle(color: AppColors.black.withOpacity(0.8)),
-                            text: "Don't have account?",
-                            children: [
-                              TextSpan(
-                                  style:const TextStyle(
-                                      color: AppColors.themeColor),
-                                  text: 'Sign Up',
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () {})
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  _buildGoToSignUpSection(),
                 ],
               ),
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildGoToSignUpSection() {
+    return Center(
+      child: Column(
+        children: [
+          TextButton(
+            onPressed: _onTapForgetPasswordButton,
+            child: const Text('Forget Password?'),
+          ),
+          RichText(
+            text: TextSpan(
+              style: TextStyle(color: AppColors.black.withOpacity(0.8)),
+              text: "Don't have account?",
+              children: [
+                TextSpan(
+                  style: const TextStyle(color: AppColors.themeColor),
+                  text: 'Sign up',
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = _onTapSignUpButton,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _onTapSignUpButton() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const SignUpScreen(),
+      ),
+    );
+  }
+
+  void _onTapForgetPasswordButton() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const EmailVerificationScreen(),
       ),
     );
   }
