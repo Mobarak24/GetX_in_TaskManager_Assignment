@@ -27,7 +27,7 @@ class _MainBottomNavScreenState extends State<MainBottomNavScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: profileAppBar(),
+      appBar: profileAppBar(context),
       body: Padding(
         padding: const EdgeInsets.only(left: 10,right: 10,top: 10),
         child: _screens[_selectedIndex],

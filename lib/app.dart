@@ -60,8 +60,7 @@ class TaskManager extends StatelessWidget {
           foregroundColor: Colors.grey,
           textStyle: const TextStyle(
             fontWeight: FontWeight.w500,
-            color: Colors.grey,
-          )
+          ),
         ),
       ),
     );

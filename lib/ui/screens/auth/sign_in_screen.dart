@@ -67,7 +67,10 @@ class _SignInScreenState extends State<SignInScreen> {
         children: [
           TextButton(
             onPressed: _onTapForgetPasswordButton,
-            child: const Text('Forget Password?'),
+            child: const Text(
+              'Forget Password?',
+              style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w600),
+            ),
           ),
           RichText(
             text: TextSpan(
@@ -102,7 +105,8 @@ class _SignInScreenState extends State<SignInScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => const MainBottomNavScreen(),
-      ),(route) => false,
+      ),
+      (route) => false,
     );
   }
 
