@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:task_manager/data/models/task_model.dart';
 
 class TaskItem extends StatelessWidget {
   const TaskItem({
-    super.key,
+    super.key, required this.taskModel,
   });
+
+  final TaskModel taskModel;
 
   @override
   Widget build(BuildContext context) {
@@ -12,19 +15,19 @@ class TaskItem extends StatelessWidget {
       elevation: 0,
       borderOnForeground: false,
       child: ListTile(
-        title: const Text(
-          'Dummmy',
+        title:  Text(
+          taskModel.title ?? '',
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Subtitle Will be here'),
-            const Text('12/12/12'),
+             Text(taskModel.description ?? ''),
+             Text('Date: ${taskModel.createdDate}'),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Chip(
-                  label: const Text('New'),
+                  label:  Text(taskModel.status ?? 'New'),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),

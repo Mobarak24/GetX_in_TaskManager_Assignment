@@ -19,6 +19,8 @@ dependencies:
   device_preview: ^1.2.0
   lottie: ^3.1.2
   cached_network_image: ^3.3.1
+  shared_preferences: ^2.2.3
+
 
 
 dev_dependencies:
