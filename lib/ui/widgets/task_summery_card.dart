@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class TaskSummeryCard extends StatelessWidget {
   const TaskSummeryCard({
-    super.key, required this.text, required this.count,
+    super.key, required this.title, required this.count,
   });
 
-  final String text;
+  final String title;
   final String count;
 
   @override
@@ -18,7 +18,7 @@ class TaskSummeryCard extends StatelessWidget {
         child: Column(
           children: [
             Text(count,style: Theme.of(context).textTheme.titleLarge,),
-            Text(text,style: Theme.of(context).textTheme.titleSmall,),
+            Text(title,style: Theme.of(context).textTheme.titleSmall,),
           ],
         ),
       ),

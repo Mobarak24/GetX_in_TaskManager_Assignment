@@ -162,7 +162,7 @@ class _SignInScreenState extends State<SignInScreen> {
       LoginModel loginModel = LoginModel.fromJson(response.responseData);
       await AuthController.saveUserAccessToken(loginModel.token!);
       await AuthController.saveUserData(loginModel.userModel!);
-      if(mounted){
+      if (mounted) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -170,9 +170,8 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
         );
       }
-
     } else {
-      if(mounted){
+      if (mounted) {
         showSnackBarMassage(context,
             response.errorMassage ?? "Email/password Invalid ! try again");
       }
