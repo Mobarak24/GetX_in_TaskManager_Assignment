@@ -1,20 +1,26 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:task_manager/data/models/network_response.dart';
+import 'package:task_manager/data/network_caller/network_caller.dart';
+import 'package:task_manager/data/utilities/urls.dart';
 import 'package:task_manager/ui/screens/auth/sign_in_screen.dart';
 import 'package:task_manager/ui/utility/app_colors.dart';
 import 'package:task_manager/ui/widgets/background_widget.dart';
+import 'package:task_manager/ui/widgets/snack_bar_massage.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
-  const ResetPasswordScreen({super.key});
+  const ResetPasswordScreen({super.key, required this.email, required this.otp});
+  final String email,otp;
 
   @override
   State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
 }
 
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
-  final TextEditingController _emailTEController = TextEditingController();
+  final TextEditingController _passwordTEController = TextEditingController();
   final TextEditingController _confirmPassTEController =
       TextEditingController();
+  bool _resetPaswordInProgress = false;
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +45,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   ),
                   const SizedBox(height: 14),
                   TextField(
-                    controller: _emailTEController,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(hintText: 'Email'),
+                    controller: _passwordTEController,
+                    decoration: const InputDecoration(hintText: 'password'),
                   ),
                   const SizedBox(height: 10),
                   TextField(
@@ -50,10 +55,16 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         const InputDecoration(hintText: 'Confirm Password'),
                   ),
                   const SizedBox(height: 10),
-                  ElevatedButton(
-                    onPressed: _onConfirmButton,
-                    child: const Icon(
-                      Icons.arrow_forward_ios_sharp,
+                  Visibility(
+                    visible: _resetPaswordInProgress == false,
+                    replacement: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    child: ElevatedButton(
+                      onPressed: _onConfirmButton,
+                      child: const Icon(
+                        Icons.arrow_forward_ios_sharp,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 36),
@@ -93,15 +104,50 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   }
 
   void _onConfirmButton() {
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => const SignInScreen()),
-            (route) => false);
+    _resetPassword(_passwordTEController.text);
+  }
+
+  Future<void> _resetPassword(String password) async {
+    _resetPaswordInProgress = true;
+    if (mounted) {
+      setState(() {});
+    }
+
+    Map<String, dynamic> inputParams = {
+      "email": widget.email,
+      "OTP": widget.otp,
+      "password": password
+    };
+
+    NetworkResponse response =
+    await NetworkCaller.postRequest(Urls.resetPassword, body: inputParams);
+    _resetPaswordInProgress = false;
+    if (mounted) {
+      setState(() {});
+    }
+    if (response.isSuccess) {
+      if (mounted) {
+        showSnackBarMassage(
+            context, response.errorMassage ?? 'Reset Password Success');
+      }
+      if(mounted){
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const SignInScreen()),
+                (route) => false);
+      }
+    } else {
+      if (mounted) {
+        showSnackBarMassage(
+            context, response.errorMassage ?? 'Reset Password failed! Try again');
+      }
+    }
+
   }
 
   @override
   void dispose() {
-    _emailTEController.dispose();
+    _passwordTEController.dispose();
     _confirmPassTEController.dispose();
     super.dispose();
   }

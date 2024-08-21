@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:task_manager/ui/controllers/auth_controller.dart';
 import 'package:task_manager/ui/screens/update_profile_screen.dart';
@@ -9,9 +11,16 @@ AppBar profileAppBar(context, [fromUpdateProfile = false]) {
   return AppBar(
     centerTitle: false,
     backgroundColor: AppColors.themeColor,
-    leading: const Padding(
-      padding: EdgeInsets.all(6),
-      child: CircleAvatar(),
+    leading:  Padding(
+      padding: const EdgeInsets.all(6),
+      child: CircleAvatar(
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(50),
+          child: Image.memory(
+            base64Decode(AuthController.userData?.photo ?? ''),
+          ),
+        ),
+      ),
     ),
     title: Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
