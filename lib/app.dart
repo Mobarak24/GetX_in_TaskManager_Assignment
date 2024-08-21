@@ -1,5 +1,7 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:task_manager/controller_binder.dart';
 import 'package:task_manager/ui/screens/auth/splash_screen.dart';
 import 'package:task_manager/ui/utility/app_colors.dart';
 
@@ -17,7 +19,7 @@ class _TaskManagerState extends State<TaskManager> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       navigatorKey: TaskManager.navigatorKey,
       title: 'Task Manager',
       debugShowCheckedModeBanner: false,
@@ -27,6 +29,7 @@ class _TaskManagerState extends State<TaskManager> {
       theme: lightThemeData(),
       darkTheme: darkThemeData(),
       themeMode: ThemeMode.system,
+      initialBinding: ControllerBinder(),
     );
   }
 

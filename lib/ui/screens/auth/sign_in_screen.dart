@@ -1,17 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:task_manager/data/models/network_response.dart';
-import 'package:task_manager/data/network_caller/network_caller.dart';
+import 'package:get/get.dart';
+import 'package:task_manager/ui/controllers/sign_in_controller.dart';
 import 'package:task_manager/ui/screens/auth/email_verification_screen.dart';
 import 'package:task_manager/ui/screens/auth/sign_up_screen.dart';
 import 'package:task_manager/ui/screens/main_bottom_nav_screen.dart';
 import 'package:task_manager/ui/utility/app_colors.dart';
 import 'package:task_manager/ui/widgets/background_widget.dart';
 import 'package:task_manager/ui/widgets/snack_bar_massage.dart';
-
-import '../../../data/models/login_model.dart';
-import '../../../data/utilities/urls.dart';
-import '../../controllers/auth_controller.dart';
 import '../../utility/app_constants.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -26,7 +22,6 @@ class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController _passwordTEController = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  bool _signInProgressing = false;
 
   @override
   Widget build(BuildContext context) {
@@ -74,18 +69,20 @@ class _SignInScreenState extends State<SignInScreen> {
                       },
                     ),
                     const SizedBox(height: 10),
-                    Visibility(
-                      visible: _signInProgressing == false,
-                      replacement: const Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                      child: ElevatedButton(
-                        onPressed: _onTapNextScreen,
-                        child: const Icon(
-                          Icons.arrow_forward_ios_sharp,
+                    GetBuilder<SignInController>(builder: (SignInController) {
+                      return Visibility(
+                        visible: SignInController.signInApiInProgress == false,
+                        replacement: const Center(
+                          child: CircularProgressIndicator(),
                         ),
-                      ),
-                    ),
+                        child: ElevatedButton(
+                          onPressed: _onTapNextScreen,
+                          child: const Icon(
+                            Icons.arrow_forward_ios_sharp,
+                          ),
+                        ),
+                      );
+                    }),
                     const SizedBox(height: 36),
                     _buildGoToSignUpSection(),
                   ],
@@ -137,43 +134,18 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  void _onTapNextScreen() {
+ Future<void> _onTapNextScreen() async {
     if (_formKey.currentState!.validate()) {
-      _signIn();
-    }
-  }
-
-  Future<void> _signIn() async {
-    _signInProgressing = true;
-    if (mounted) {
-      setState(() {});
-    }
-    Map<String, dynamic> requestData = {
-      "email": _emailTEController.text.trim(),
-      "password": _passwordTEController.text
-    };
-    final NetworkResponse response =
-        await NetworkCaller.postRequest(Urls.login, body: requestData);
-    _signInProgressing = false;
-    if (mounted) {
-      setState(() {});
-    }
-    if (response.isSuccess) {
-      LoginModel loginModel = LoginModel.fromJson(response.responseData);
-      await AuthController.saveUserAccessToken(loginModel.token!);
-      await AuthController.saveUserData(loginModel.userModel!);
-      if (mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const MainBottomNavScreen(),
-          ),
-        );
-      }
-    } else {
-      if (mounted) {
-        showSnackBarMassage(context,
-            response.errorMassage ?? "Email/password Invalid ! try again");
+      final bool result = await Get.find<SignInController>().signIn(
+        _emailTEController.text.trim(),
+        _passwordTEController.text,
+      );
+      if(result){
+        Get.offAll(() => const MainBottomNavScreen());
+      }else{
+        if(mounted){
+          showSnackBarMassage(context, Get.find<SignInController>().errorMessage );
+        }
       }
     }
   }
